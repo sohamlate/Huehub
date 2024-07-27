@@ -26,7 +26,7 @@ const BecomeSeller = ({setIsLoggedIn,user,setUser})=>{
         try {
            // console.log(formData);
           const response = await axios.post(
-            "http://localhost:4000/api/v1/auth/changeAccountType",
+            "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/changeAccountType",
             formData
           );
           console.log(response);

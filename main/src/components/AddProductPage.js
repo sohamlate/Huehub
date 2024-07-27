@@ -64,7 +64,7 @@ const Productpage = ({ showAddPage, setShowAddPage }) => {
     const fetch = async () => {
       try {
         const cat = await axios.get(
-          "http://localhost:4000/api/v1/product/getCategoryDetail"
+          "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getCategoryDetail"
         );
         setCatogoryList(cat.data.allCategory);
       } catch (err) {
@@ -88,7 +88,7 @@ const Productpage = ({ showAddPage, setShowAddPage }) => {
       );
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/createproduct",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/createproduct",
         formDataToSend,
         {
           headers: {

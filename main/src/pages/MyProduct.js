@@ -23,7 +23,7 @@ const MyProduct = ({user})=>{
         setLoading(true); 
         try{
             const res = await axios.post(
-            "http://localhost:4000/api/v1/product/displayMyProduct",{userId}
+            "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayMyProduct",{userId}
             );
             if(res.data.products)
             setPosts(res.data.products,"fdsafa");

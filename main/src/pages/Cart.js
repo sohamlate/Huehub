@@ -23,7 +23,7 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
   const showCart = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/displayCartItem",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayCartItem",
         { userID }
       );
       console.log(response);
@@ -43,7 +43,7 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
       const R_order = response.razorpay_order_id;
       const R_sign = response.razorpay_signature;
       const res = await axios.post(
-        "http://localhost:4000/api/v1/payment/manyVerifySignature",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/manyVerifySignature",
         { R_id, R_order, R_sign, userId }
       );
       toast.success("Payment successful");
@@ -59,9 +59,9 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
     // try {
     //   const {
     //     data: { key },
-    //   } = await axios.get("http://localhost:4000/api/v1/payment/key");
+    //   } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
     //   const response = await axios.post(
-    //     "http://localhost:4000/api/v1/payment/manyCapturePayment",
+    //     "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/manyCapturePayment",
     //     { totalAmount, userId, token }
     //   );
     //   console.log(key, "printing key");

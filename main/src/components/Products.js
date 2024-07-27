@@ -27,7 +27,7 @@ const Products = ({ item, user, isLiked, setIsLiked }) => {
     setIsLiked(!isLiked);
 
     try {
-      let response = await axios.post('http://localhost:4000/api/v1/product/likedProduct', {
+      let response = await axios.post('https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/likedProduct', {
         userId: user._id,
         productId: item._id
       });

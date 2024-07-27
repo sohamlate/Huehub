@@ -38,7 +38,7 @@ const Producturl = ({ user, isLoggedIn }) => {
     setShowSeller(!showSeller);
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/auth/isFollowing",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/isFollowing",
         {
           userId: user._id,
           artistId: seller._id,
@@ -53,7 +53,7 @@ const Producturl = ({ user, isLoggedIn }) => {
   const fetchItem = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/getproductdetail",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getproductdetail",
         { productId }
       );
       const productDetails = response.data.productDetails[0];
@@ -74,7 +74,7 @@ const Producturl = ({ user, isLoggedIn }) => {
   const showCart = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/displayCartItem",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayCartItem",
         { userID }
       );
       setCart(response.data.cartItem.cartProduct);
@@ -86,7 +86,7 @@ const Producturl = ({ user, isLoggedIn }) => {
 
   const removeFromCart = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/product/removeFromCart", {
+      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/removeFromCart", {
         productId,
         userID,
       });
@@ -100,7 +100,7 @@ const Producturl = ({ user, isLoggedIn }) => {
 
   const addToCart = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/product/addToCart", {
+      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/addToCart", {
         productId,
         userID,
       });
@@ -116,7 +116,7 @@ const Producturl = ({ user, isLoggedIn }) => {
     try {
       const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
         response;
-      await axios.post("http://localhost:4000/api/v1/payment/verifySignature", {
+      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/verifySignature", {
         R_id: razorpay_payment_id,
         R_order: razorpay_order_id,
         R_sign: razorpay_signature,
@@ -136,9 +136,9 @@ const Producturl = ({ user, isLoggedIn }) => {
     // try {
     //   const {
     //     data: { key },
-    //   } = await axios.get("http://localhost:4000/api/v1/payment/key");
+    //   } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
     //   const response = await axios.post(
-    //     "http://localhost:4000/api/v1/payment/capturePayment",
+    //     "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/capturePayment",
     //     {
     //       product_id: productId,
     //       userId: userID,

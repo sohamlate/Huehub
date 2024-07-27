@@ -11,7 +11,7 @@ const ShippingInfo = ({ user, formData, setFormData }) => {
   const fetchAdditionalDetails = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/profile/getUserData",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/profile/getUserData",
         { userId: user._id }
       );
       console.log(response);
@@ -99,7 +99,7 @@ const ShippingInfo = ({ user, formData, setFormData }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/order/saveAddress",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/order/saveAddress",
         {
           userId: user._id,
           address: formData.address,

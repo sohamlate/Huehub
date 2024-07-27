@@ -26,7 +26,7 @@ const CartItem = ({ item, itemIndex, userID, showCart }) => {
   async function removefromcart() {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/removeFromCart",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/removeFromCart",
         { productId, userID }
       );
       console.log("remove to cart", response);

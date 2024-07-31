@@ -155,7 +155,7 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
       toast.error(error.message);
     }
   };
-
+  console.log("First change");
   return (
     <div className="flex flex-col justify-center items-center">
       <h2 className="text-2xl font-semibold mb-4">Finish</h2>

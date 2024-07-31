@@ -16,7 +16,7 @@ const SellerProfile = ({ seller, user,isFollowing ,setIsFollowing ,setShowSeller
 
   const followUser = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/auth/followuser", {
+      const response = await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/followuser", {
         artistId: seller._id,
         userId: user._id
       });
@@ -28,7 +28,7 @@ const SellerProfile = ({ seller, user,isFollowing ,setIsFollowing ,setShowSeller
 
   const unfollowUser = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/auth/unfollow", {
+      const response = await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/unfollow", {
         artistId: seller._id,
         userId: user._id
       });
@@ -40,7 +40,7 @@ const SellerProfile = ({ seller, user,isFollowing ,setIsFollowing ,setShowSeller
 
   const fetchProductById = async (productId) => {
     const response = await axios.post(
-      "http://localhost:4000/api/v1/product/getproductdetail",
+      "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getproductdetail",
       { productId }
     );
     return response.data; // Assuming the API response structure

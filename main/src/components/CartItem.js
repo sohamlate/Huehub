@@ -25,7 +25,7 @@ const CartItem = ({ user,item, itemIndex, cart,userID, showCart }) => {
         newQuantity -= 1;
       }
   
-      await axios.post("http://localhost:4000/api/v1/product/updateCartQuantity", {
+      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/updateCartQuantity", {
         productId,
         userID,
         quantity: newQuantity
@@ -48,7 +48,7 @@ const CartItem = ({ user,item, itemIndex, cart,userID, showCart }) => {
   async function removeFromCart() {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/removeFromCart",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/removeFromCart",
         { productId, userID }
       );
       console.log("remove to cart", response);

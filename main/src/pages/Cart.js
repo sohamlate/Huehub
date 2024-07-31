@@ -26,7 +26,7 @@ console.log(cart,"jfdhugifdhgouhfgiutuhijd");
   const showCart = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/displayCartItem",
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayCartItem",
         { userID }
       );
       setCart(response.data.cartItem);

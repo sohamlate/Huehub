@@ -12,7 +12,7 @@ const EditProduct = ({ item, showEditPage, setShowEditPage }) => {
   });
   const editHandler = async () => {
     const response = await axios.post(
-      "http://localhost:4000/api/v1/product/editProduct",
+      "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/editProduct",
       {
         productName: formData.productName,
         productDescription: formData.productDescription,
@@ -60,7 +60,7 @@ const EditProduct = ({ item, showEditPage, setShowEditPage }) => {
         formDataToSend.append('productId', item._id);
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/product/editProduct",formDataToSend
+        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/editProduct",formDataToSend
       );
       console.log("edit response",response);
     }

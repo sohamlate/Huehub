@@ -33,7 +33,7 @@ const LoginPage = (props) => {
     try {
       console.log("hiii");
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/login",
+        "http://localhost:4000/api/v1/auth/login",
         formData
       );
       localStorage.setItem("token", response.data.token);
@@ -53,7 +53,7 @@ const LoginPage = (props) => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.location.href = "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/google";
+      window.location.href = "http://localhost:4000/api/v1/auth/google";
     } catch (error) {
       console.error("Error logging in with Google:", error);
       toast.error("Failed to log in with Google");

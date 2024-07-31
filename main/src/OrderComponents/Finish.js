@@ -3,20 +3,22 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Logo from "../assests/logo.png";
 import { useNavigate } from "react-router-dom";
+import PaymentInfo from "./PaymentInfo";
 
-const Finish = ({ cartItem, user, formData }) => {
+const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
 
 
   const productId = cartItem[0]._id;
   const userID = user._id;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [totalPrice, setTotalPrice] = useState(0);
+  let totalPrice = 0;
+   
 
-  const items = cartItem.map((item) => ({
-    productId: item._id,
-  }));
 
+  const items = cartBuy ? cartItem.map((item) => ({
+    productId: item.productId._id,
+  })) : [];
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -28,18 +30,52 @@ const Finish = ({ cartItem, user, formData }) => {
       document.body.removeChild(script);
     };
   }, []);
+  
 
 
-  const orderCreation = async () => {
+  const verifyStatus = async (response) => {
     try {
-      console.log(totalPrice , items,"fdjkgbuhsgfidsgbfib");
-      const orderResponse = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/order/placeOrder",
+      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
+      await axios.post("http://localhost:4000/api/v1/payment/verifySignature", {
+        R_id: razorpay_payment_id,
+        R_order: razorpay_order_id,
+        R_sign: razorpay_signature,
+        product_id: productId,
+        userId: userID,
+        items: items,
+        orderDate: Date.now(),
+        totalPrice: totalPrice/100,
+        deliveryAddress: {
+          street: formData.address,
+          city: formData.city,
+          state: formData.state,
+          country: formData.country,
+          postalCode: formData.pincode,
+        },
+      });
+
+      
+      toast.success("Payment successful");
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error.message);
+    }
+  };
+
+  const verifyStatusMany = async(response)=> {
+    try {
+      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
+       await axios.post(
+        "http://localhost:4000/api/v1/payment/manyVerifySignature",
         {
+          R_id: razorpay_payment_id,
+          R_order: razorpay_order_id,
+          R_sign: razorpay_signature,
+          product_id: productId,
           userId: userID,
-          items: items,
           orderDate: Date.now(),
-          totalPrice: totalPrice,
+          totalPrice: totalPrice/100,
           deliveryAddress: {
             street: formData.address,
             city: formData.city,
@@ -49,27 +85,8 @@ const Finish = ({ cartItem, user, formData }) => {
           }
         }
       );
-      console.log("72115", orderResponse);
-    } catch (err) {
-      console.log("hiu");
-      console.log(err);
-
-    }
-  };
-
-  const verifyStatus = async (response) => {
-    try {
-      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
-        response;
-      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/verifySignature", {
-        R_id: razorpay_payment_id,
-        R_order: razorpay_order_id,
-        R_sign: razorpay_signature,
-        product_id: productId,
-        userId: userID,
-      });
-      
       toast.success("Payment successful");
+      setCartBuy(false);
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
@@ -82,9 +99,18 @@ const Finish = ({ cartItem, user, formData }) => {
     try {
       const {
         data: { key },
-      } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
-      const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/capturePayment",
+      } = await axios.get("http://localhost:4000/api/v1/payment/key");
+
+      const response = cartBuy
+       ?  await axios.post(
+        "http://localhost:4000/api/v1/payment/manyCapturePayment",
+        {
+          userId: userID,
+          token,
+        }
+      )
+       : await axios.post(
+        "http://localhost:4000/api/v1/payment/capturePayment",
         {
           product_id: productId,
           userId: userID,
@@ -93,7 +119,8 @@ const Finish = ({ cartItem, user, formData }) => {
       );
       console.log(response,"payment");
       toast.success("Order id created");
-      setTotalPrice(response.data.amount);
+      totalPrice = response.data.amount;
+
       const options = {
         key,
         amount: response.data.amount,
@@ -102,7 +129,7 @@ const Finish = ({ cartItem, user, formData }) => {
         description: "Thank you Purchasing",
         image: Logo,
         order_id: response.data.orderId,
-        handler: verifyStatus,
+        handler:cartBuy ? verifyStatusMany : verifyStatus,
         prefill: {
           name: user.name,
           email: user.email,
@@ -116,9 +143,13 @@ const Finish = ({ cartItem, user, formData }) => {
         },
       };
 
-      await orderCreation();
       const razor = new window.Razorpay(options);
       razor.open();
+
+      razor.on('payment.failed' , function (response){
+        toast.error("Payment Failed");
+      });
+
     } catch (error) {
       console.error("Error:", error);
       toast.error(error.message);

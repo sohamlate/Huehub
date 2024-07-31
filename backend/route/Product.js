@@ -4,7 +4,7 @@ const router = express.Router();
 const {createProduct,getProductDetails,showAllProducts,getsellerproduct,deleteProduct,displayMyProduct,editProduct,likedProduct} = require("../controller/Product");
 const {createCategory,showAllCategory,categoryDetails,getid,categoryDetailsArray} = require("../controller/Category");
 const {createRating,getAllRatings,getAverageRating} = require("../controller/RatingAndReview");
-const {addToCart,removeFromCart,displayCartItem} = require("../controller/CartItem");
+const {addToCart,removeFromCart,displayCartItem,updateCart} = require("../controller/CartItem");
 const {auth, isAdmin,isCustomer,isSeller} = require("../middleware/auth");
 
 
@@ -29,6 +29,7 @@ router.get("/getReview",getAllRatings);
 router.post("/addtocart",addToCart);
 router.post("/removeFromCart",removeFromCart);
 router.post("/displayCartItem",displayCartItem);
+router.post("/updateCartQuantity",updateCart);
 
 router.post("/displayMyProduct",displayMyProduct);
 

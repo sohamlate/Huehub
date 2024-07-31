@@ -57,10 +57,7 @@ const productSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  orderby:[{
-    type : mongoose.Schema.Types.ObjectId,
-    ref : "Order"
-  }]
+
 });
 
 module.exports = mongoose.model("Product", productSchema);

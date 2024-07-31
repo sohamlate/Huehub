@@ -5,16 +5,12 @@ import { FaCartShopping } from "react-icons/fa6";
 import Profile from "../components/Profile";
 import Menu from "../components/Menu";
 import CartHover from "./CartHover";
+import axios from "axios";
 import LikedHover from "./LikedHover";
 
-const Navbar = ({
-  user,
-  setUser,
-  isLoggedIn,
-  setIsLoggedIn,
-  titems,
-  cartItems,
-}) => {
+const Navbar = ({ isLoggedIn,setIsLoggedIn,user,setUser,titems,cartItems,setTitems}) => {
+
+  const [cartItem ,setCartItems]= useState();
   const [isclick, setIsClick] = useState(false);
   const [ismenu, setismenu] = useState(false);
   const [isHover, setIsHover] = useState(false);
@@ -22,10 +18,37 @@ const Navbar = ({
   const [ondislike,setOndislike] = useState();
   const cartHoverRef = useRef(null);
   const liked = user && Array.isArray(user.likedProducts) ? user.likedProducts : [];
-
+  
+  
+  const showCart = async (e) => {
+    try {
+      const userID = user?._id;
+      console.log(userID,"prinrint se");
+        const response = await axios.post(
+          "http://localhost:4000/api/v1/product/displayCartItem",
+          { userID }
+        );
+        console.log(response,"dsafaffsdf");
+        setCartItems(response.data.cartItem);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
 
   useEffect(() => {
+    showCart();
+  }, [user,cartItem]);
+
+  useEffect(() => {
+    if(cartItem)
+    setTitems(cartItem.length);
+  }, [cartItem]);
+  
+
+
+  useEffect(() => {
+  
     const handleDocumentClick = (event) => {
       if (
         cartHoverRef.current &&
@@ -189,13 +212,13 @@ const Navbar = ({
                       <div className="flex justify-between items-center mt-2">
                         <p className="p-1 text-amber-600 mx-2">My Cart</p>
                         <p className="p-1 text-amber-600 mx-2">
-                          {cartItems.length} items
+                          {cartItem && cartItem.length} items
                         </p>
                       </div>
-                      {cartItems.length > 0 ? (
+                      {cartItem && cartItem.length > 0 ? (
                         <div className="p-4">
-                          {cartItems.map((item) => (
-                            <CartHover key={item.id} item={item} user={user} />
+                          {cartItem.map((item) => (
+                            <CartHover key={item.productId.id} item={item.productId} user={user} />
                           ))}
                         </div>
                       ) : (

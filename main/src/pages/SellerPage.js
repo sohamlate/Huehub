@@ -23,7 +23,7 @@ const SellerPage = (props) => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getsellerproduct",
+        "http://localhost:4000/api/v1/product/getsellerproduct",
         {
           headers: {
             Authorization: `${token}`,

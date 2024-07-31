@@ -9,7 +9,6 @@ const Products = ({ item, user, isLiked, setIsLiked }) => {
   const [displayHead, setDisplayHead] = useState(head);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (head.length > 30) {
       setDisplayHead(head.slice(0, 30) + "...");
@@ -19,7 +18,7 @@ const Products = ({ item, user, isLiked, setIsLiked }) => {
   }, [head]);
 
   function handleClick() {
-    navigate(`/product/${item._id}`);
+    navigate(`/product/${item._id}`, { state: { user } });
   }
 
   async function handleLikeClick(event) {
@@ -27,7 +26,7 @@ const Products = ({ item, user, isLiked, setIsLiked }) => {
     setIsLiked(!isLiked);
 
     try {
-      let response = await axios.post('https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/likedProduct', {
+      let response = await axios.post('http://localhost:4000/api/v1/product/likedProduct', {
         userId: user._id,
         productId: item._id
       });

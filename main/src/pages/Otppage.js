@@ -20,7 +20,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/sendOTP",
+        "http://localhost:4000/api/v1/auth/sendOTP",
         formData
       );
       navigate("/signup");

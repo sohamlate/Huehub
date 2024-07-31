@@ -8,7 +8,7 @@ const LikedHover = ({ item, user, ondislike, setOndislike }) => {
   const dislike = async () => {
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/likedProduct",
+        "http://localhost:4000/api/v1/product/likedProduct",
         { userId: user._id, productId: item }
       );
       console.log(response);
@@ -25,7 +25,7 @@ const LikedHover = ({ item, user, ondislike, setOndislike }) => {
     const getDetails = async () => {
       try {
         const response = await axios.post(
-          "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getproductdetail",
+          "http://localhost:4000/api/v1/product/getproductdetail",
           { productId: item }
         );
         setDetails(response.data.productDetails[0]);

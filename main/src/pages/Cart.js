@@ -6,30 +6,30 @@ import Logo from "../assests/logo.png";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Confirmation from "./Confirmation";
-const Cart = ({ user, setTitems ,setCartItems}) => {
+const Cart = ({ user, setTitems ,setCartItems,cartItem,titems}) => {
   const [cart, setCart] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const userID = user._id;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [cartPage,setCartPage] = useState(false);
-  console.log(cartPage);
+  const [buyPage,setBuyPage] = useState(false);
+  const [cartBuy  , setCartBuy] = useState(false);
+  
+console.log(cart,"jfdhugifdhgouhfgiutuhijd");
+
   useEffect(() => {
-    if (cart) setTotalAmount(cart.reduce((acc, curr) => acc + curr.price, 0));
-    setTitems(cart.length); // Update total number of items
+    if (cart) setTotalAmount(cart.reduce((acc, curr) => acc +( curr.productId.price * curr.quantity), 0));
+      setTitems(cart.length);
   }, [cart, setTitems]);
 
   const showCart = async (e) => {
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayCartItem",
+        "http://localhost:4000/api/v1/product/displayCartItem",
         { userID }
       );
-      console.log(response);
-      setCart(response.data.cartItem.cartProduct);
-      setCartItems(response.data.cartItem.cartProduct);
-      console.log("displaying cart item", cart);
+      setCart(response.data.cartItem);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -37,72 +37,13 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
 
   const userId = userID;
 
-  async function verifyStatus(response) {
-    try {
-      const R_id = response.razorpay_payment_id;
-      const R_order = response.razorpay_order_id;
-      const R_sign = response.razorpay_signature;
-      const res = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/manyVerifySignature",
-        { R_id, R_order, R_sign, userId }
-      );
-      toast.success("Payment successful");
-      navigate("/");
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error(error.message);
-    }
-  }
-
   async function buyHandler() {
-    setCartPage(!cartPage);
-    // try {
-    //   const {
-    //     data: { key },
-    //   } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
-    //   const response = await axios.post(
-    //     "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/manyCapturePayment",
-    //     { totalAmount, userId, token }
-    //   );
-    //   console.log(key, "printing key");
-    //   console.log(response.data);
-    //   toast.success("Order ID created");
-    //   var options = {
-    //     key: key, // Enter the Key ID generated from the Dashboard
-    //     amount: response.data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    //     currency: "INR",
-    //     name: "Huehub",
-    //     description: "Thank you for purchasing",
-    //     image: Logo,
-    //     order_id: response.data.orderId, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    //     handler: function (response) {
-    //       // sentmail();
-    //       verifyStatus(response);
-    //     },
-    //     prefill: {
-    //       name: user.name,
-    //       email: user.email,
-    //       contact: user.additionalDetail.contactNumber,
-    //     },
-    //     notes: {
-    //       address: "Razorpay Corporate Office",
-    //     },
-    //     theme: {
-    //       color: "#3399cc",
-    //     },
-    //   };
-
-    //   var razor = new window.Razorpay(options);
-    //   razor.open();
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   toast.error(error.response.data.message);
-    // }
+    setBuyPage(!buyPage);
   }
 
   useEffect(() => {
     showCart();
-  }, []);
+  }, [user]);
 
   return (
     <div className=" bg-gray-300 h-full">
@@ -121,6 +62,8 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
                     itemIndex={index}
                     userID={userID}
                     showCart={showCart}
+                    user={user}
+                    cart = {cart}
                   />
                 );
               })}
@@ -158,9 +101,9 @@ const Cart = ({ user, setTitems ,setCartItems}) => {
         )}
       </div>
       {
-        cartPage && (
+        buyPage && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-            <Confirmation user={user} cartItem={cart}/>
+            <Confirmation user={user} cartItem={cart} setBuyPage= {setBuyPage} cartBuy={!cartBuy} setCartBuy={setCartBuy}/>
           </div>
         )
       }

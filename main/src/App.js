@@ -45,20 +45,19 @@ const App = () => {
   const [titems,setTitems] = useState();
   const location = useLocation();
   const [cartItems,setCartItems] = useState([]);
-  useEffect(() => {
+  useEffect(() => { 
     const autoLogin = async () => {
       try {
         const token = localStorage.getItem("token");
    //     console.log(token);
        // commented below part after hiting url like share product it redirect 
-        // if (!token) {
-        //   console.log("token not");
-        //   navigate("/login"); 
-        //   return;
-        // }
+        if (!token) {
+          console.log("token not");
+          navigate("/login"); 
+        }
 
         const response = await axios.get(
-          "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/autoLogin",
+          "http://localhost:4000/api/v1/auth/autoLogin",
           {
             headers: {
               Authorization: `${token}`,
@@ -67,6 +66,7 @@ const App = () => {
         );
       
         if (response.data.success) {
+          localStorage.setItem("user", JSON.stringify(response.data.data));
           setUser(response.data.data);
           // socket.emit("login", {
           //   userId: response.data.data._id,
@@ -95,11 +95,11 @@ const App = () => {
     } catch(err) {}
   }, [user]);
 
-
+console.log("settoiing user",user);
 
   return( 
     <div>
-   <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser} titems={titems} cartItems={cartItems}></Navbar>
+   <Navbar isLoggedIn={isLoggedIn} setTitems={setTitems} setIsLoggedIn={setIsLoggedIn} user={user}  setUser={setUser} titems={titems} cartItems={cartItems}></Navbar>
       <Routes>
         <Route path="/" element={<Home user={user}/>} />
         <Route
@@ -147,7 +147,7 @@ const App = () => {
         <Route path="/sellerproduct" element={<SellerProduct user={user} />} />
         <Route path="/sellerpage" element={<SellerPage user={user} />} />
         <Route path="/accountType" element={<Canvas setIsLoggedIn={setIsLoggedIn}/>}/>
-        <Route path="/catproduct" element={<CatProductpage setIsLoggedIn={setIsLoggedIn}/>}/>
+        <Route path="/catproduct" element={<CatProductpage setIsLoggedIn={setIsLoggedIn} user={user}/>}/>
       
 
           

@@ -32,7 +32,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
       const formDataWithAccountType = { ...formData, accountType };
       console.log(formDataWithAccountType);
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/signup",
+        "http://localhost:4000/api/v1/auth/signup",
         formDataWithAccountType
       );
       localStorage.setItem("token", response.data.token);

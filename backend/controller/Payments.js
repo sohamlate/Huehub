@@ -1,6 +1,7 @@
 const { instance } = require("../config/razorpay");
 const Product = require("../model/Product");
 const User = require("../model/User");
+const Order = require("../model/Order");
 const mailsender = require("../utils/mailSender");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
@@ -59,7 +60,7 @@ exports.capturePayment = async (req, res) => {
       success: true,
       productName: product.productName,
       productDescription: product.productDescription,
-      thumbnail: product.thumbnail,
+      thumbnail: product.thumbnails,
       orderId: paymentResponse.id,
       currency: paymentResponse.currency,
       amount: paymentResponse.amount,
@@ -75,11 +76,39 @@ exports.capturePayment = async (req, res) => {
 
 exports.manyCapturePayment = async (req, res) => {
   try {
-    const { userId, totalAmount } = req.body;
+    const { userId } = req.body;
 
-    let product;
+    const user = await User.findById(userId)
+    .populate({
+      path: 'cartProduct.productId', // Path to populate
+      model: 'Product', // Model to populate with
+    })
+    .exec(); 
 
-    const amount = totalAmount;
+  
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const cartProducts = user.cartProduct;
+    if (!cartProducts || cartProducts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No products in cart",
+      });
+    }
+
+    let totalAmount = 0;
+    cartProducts.forEach(product => {
+      totalAmount += product.productId.price * product.quantity; // Assuming each product has a `price` field
+    });
+
+    console.log(totalAmount);
+
+    const amount = totalAmount ;
     const currency = "INR";
     const options = {
       amount: amount * 100,
@@ -89,15 +118,18 @@ exports.manyCapturePayment = async (req, res) => {
         userId,
       },
     };
+
     const paymentResponse = await instance.orders.create(options);
+
     return res.status(200).json({
       success: true,
       orderId: paymentResponse.id,
       currency: paymentResponse.currency,
       amount: paymentResponse.amount,
     });
+
   } catch (err) {
-    console.log("error occured in creating paymant ", err);
+    console.log("error occzcdszcured in creating paymant ", err);
     return res.status(500).json({
       success: false,
       message: err.message,
@@ -106,21 +138,17 @@ exports.manyCapturePayment = async (req, res) => {
 };
 
 exports.verifySignature = async (req, res) => {
-  //  const webhookSecrete = "12345687";
-  console.log(req.body, "fdasf");
-  // console.log(res);
+  
   let body = `${req.body.R_order}|${req.body.R_id}`;
   const signature = req.body.R_sign;
-  console.log(signature, "dsa");
   const shasum = crypto
     .createHmac("sha256", process.env.RAZORPAY_SECRETE)
     .update(body)
     .digest("hex");
-  console.log(shasum);
+
   if (signature === shasum) {
-    console.log("Payment is authorized");
-    const { product_id, userId } = req.body;
-    console.log("dsadsa", product_id, userId);
+    const { product_id, userId, orderDate, totalPrice, deliveryAddress } = req.body;
+
     try {
       const enrolledProduct = await Product.findOneAndUpdate(
         { _id: product_id },
@@ -141,22 +169,48 @@ exports.verifySignature = async (req, res) => {
         { new: true }
       );
 
+      const item = {
+        itemId: product_id,
+        quantity: 1,
+      };
+
+      
+      const newOrder = await Order.create({
+        userId: userId,
+        items: item,
+        totalPrice: totalPrice,
+        orderDate: orderDate,
+        deliveryAddress: deliveryAddress,
+        shippingMethod: "default",
+      });
+      
+      await User.findByIdAndUpdate(
+        { _id: userId },
+        { $push: { orders: newOrder._id } },
+        { new: true }
+      );
+           
       const emailResponse = await mailsender(
         purchaseCustomer.email,
         "Congratulation from huehub",
         "Congratution payment is successful"
       );
 
+
       return res.status(200).json({
         success: true,
         message: "Signature is valid",
       });
+
+
     } catch (err) {
+
       console.log("error occured in verifying paymant ", err);
       return res.status(500).json({
         success: false,
         message: err.message,
       });
+      
     }
   } else {
     return res.status(400).json({
@@ -176,7 +230,7 @@ exports.manyVerifySignature = async (req, res) => {
 
   if (signature === shasum) {
     console.log("Payment is authorized");
-    const { userId } = req.body;
+    const { product_id, userId,orderDate, totalPrice, deliveryAddress } = req.body;
 
     try {
       const user = await User.findOne({ _id: userId });
@@ -190,9 +244,9 @@ exports.manyVerifySignature = async (req, res) => {
       }
 
       await Promise.all(
-        products.map(async (product_id) => {
+        products.map(async (product) => {
           const enrolledProduct = await Product.findOneAndUpdate(
-            { _id: product_id },
+            { _id: product.productId },
             { $push: { customerPurchase: userId } },
             { new: true }
           );
@@ -207,20 +261,48 @@ exports.manyVerifySignature = async (req, res) => {
       );
 
       await Promise.all(
-        products.map(async (product_id) => {
+        products.map(async (product) => {
           const purchaseCustomer = await User.findOneAndUpdate(
             { _id: userId },
-            { $push: { products: product_id } },
+            { $push: { products: product.productId } },
             { new: true }
           );
         })
       );
+
+      const items = products.map(product => ({
+        itemId: product.productId,
+        quantity: product.quantity // Assuming each product has a quantity of 1, adjust as needed
+      }));
+
+   
+
+      
+      const newOrder = await Order.create({
+        userId: userId,
+        items: items,
+        totalPrice: totalPrice,
+        orderDate: orderDate,
+        deliveryAddress: deliveryAddress,
+        shippingMethod: "default",
+      });
+      
+      await User.findByIdAndUpdate(
+        { _id: userId },
+        { $push: { orders: newOrder._id } },
+        { new: true }
+      );
+
+
 
       const emailResponse = await mailsender(
         user.email,
         "Congratulation from huehub",
         "Congratution payment is successful"
       );
+
+      user.cartProduct = [];
+      user.save();
 
       return res.status(200).json({
         success: true,

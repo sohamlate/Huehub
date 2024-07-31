@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ShippingInfo = ({ user, formData, setFormData }) => {
+const ShippingInfo = ({ user, formData, setFormData, }) => {
   console.log(user);
 
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ const ShippingInfo = ({ user, formData, setFormData }) => {
   const fetchAdditionalDetails = async () => {
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/profile/getUserData",
+        "http://localhost:4000/api/v1/profile/getUserData",
         { userId: user._id }
       );
       console.log(response);
@@ -99,7 +99,7 @@ const ShippingInfo = ({ user, formData, setFormData }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/order/saveAddress",
+        "http://localhost:4000/api/v1/order/saveAddress",
         {
           userId: user._id,
           address: formData.address,

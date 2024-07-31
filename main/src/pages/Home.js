@@ -20,7 +20,7 @@ const Home = ({user})=>{
     const navigate = useNavigate();
 
     function explorehandler(){
-        navigate('/gallary');
+        navigate('/gallery');
     }
 
     const title1 = "Transform ";
@@ -43,7 +43,7 @@ const Home = ({user})=>{
     async function catProductData(){
         setLoading(true); 
         try{
-            const res = await axios.get('https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getCategoryDetail');  
+            const res = await axios.get('http://localhost:4000/api/v1/product/getCategoryDetail');  
            setPosts(res.data.allCategory);
         }
         catch(error){

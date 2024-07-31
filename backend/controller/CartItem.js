@@ -9,7 +9,7 @@ const Category =  require("../model/Category");
 
 exports.addToCart = async(req,res)=>{
     try{
-        const productId = req.body.productId;
+        const {productId} = req.body;
 
         if(!productId){
             return res.status(400).jsin({
@@ -28,7 +28,9 @@ exports.addToCart = async(req,res)=>{
             });
         }
 
-        await User.findByIdAndUpdate({_id:sellerDetails._id},{$push:{cartProduct:productId}},{new:true});
+        const quantity =1;
+
+        await User.findByIdAndUpdate({_id:sellerDetails._id}, { $push: { cartProduct: { productId ,quantity} } },{new:true});
     
         return res.status(200).json({
             success:true,
@@ -49,7 +51,7 @@ exports.removeFromCart = async(req,res)=>{
         const productId = req.body.productId;
 
         if(!productId){
-            return res.status(400).jsin({
+            return res.status(400).json({
                 success:false,
                 message:"All filelds are required",
             });
@@ -65,7 +67,7 @@ exports.removeFromCart = async(req,res)=>{
             });
         }
 
-        await User.findByIdAndUpdate({_id:sellerDetails._id},{$pull:{cartProduct:productId}},{new:true});
+        await User.findByIdAndUpdate({_id:sellerDetails._id}, { $pull: { cartProduct: { productId: productId } } },{new:true});
 
     
         return res.status(200).json({
@@ -101,12 +103,17 @@ exports.displayCartItem = async(req,res)=>{
             });
         }
 
-        const cartItem = await User.findById(sellerDetails._id).populate("cartProduct").exec();
+        const user = await User.findById(sellerDetails._id)
+      .populate({
+        path: 'cartProduct.productId', // Path to populate
+        model: 'Product', // Model to populate with
+      })
+      .exec();   
     
         return res.status(200).json({
             success:true,
             message:"cart data displaying successfully",
-            cartItem,
+            cartItem : user.cartProduct,
         });    
     }
     catch(err){
@@ -116,6 +123,58 @@ exports.displayCartItem = async(req,res)=>{
             message:err.message,
         });
     }
+}
+exports.updateCart = async(req,res)=>{
+
+
+    try {
+        const { productId, userID, quantity } = req.body;
+        
+        if (!userID || !productId || quantity == null) {
+            return res.status(400).json({
+              success: false,
+              message: "User ID, Product ID, and quantity are required",
+            });
+          }
+
+          const user = await User.findById(userID);
+
+          if (!user) {
+            return res.status(404).json({
+              success: false,
+              message: "User not found",
+            });
+          }
+      
+          const updateResult = await User.findOneAndUpdate(
+            { _id: userID, "cartProduct.productId": productId },
+            { $set: { "cartProduct.$.quantity": quantity } },
+            { new: true }
+          ).populate({
+            path: "cartProduct.productId",
+            model: "Product"
+          }).exec();
+      
+          if (!updateResult) {
+            return res.status(404).json({
+              success: false,
+              message: "Product not found in cart",
+            });
+          }
+      
+          return res.status(200).json({
+            success: true,
+            message: "Cart updated successfully",
+            cartProduct: updateResult.cartProduct,
+          });
+        } catch (err) {
+          console.log("Error while updating cart", err);
+          return res.status(500).json({
+            success: false,
+            message: err.message,
+          });
+        }
+    
 }
 
 

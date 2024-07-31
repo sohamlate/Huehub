@@ -15,7 +15,7 @@ const CategoriesProducts = ({ item }) => {
       const itemID = item._id;
       //         console.log("hwqeqwewqeweqwew",formData);
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getCategoryPageDetail",
+        "http://localhost:4000/api/v1/product/getCategoryPageDetail",
         { itemID }
       );
       const item1 = response.data.data.selectedCategory.products;

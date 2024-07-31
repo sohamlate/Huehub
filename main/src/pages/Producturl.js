@@ -9,8 +9,15 @@ import { ReactTyped } from "react-typed";
 import { motion } from "framer-motion";
 import Sellerprofile from "./Sellerprofile";
 import Confirmation from "./Confirmation";
-const Producturl = ({ user, isLoggedIn }) => {
+
+
+
+
+const Producturl = () => {
+
   const location = useLocation();
+  const user = location.state?.user;
+
   const [buyPage, setBuyPage] = useState(false);
   const navigate = useNavigate();
   const [item, setItem] = useState({});
@@ -25,8 +32,11 @@ const Producturl = ({ user, isLoggedIn }) => {
   const token = localStorage.getItem("token");
   const [rating, setRating] = useState();
   const [showSeller, setShowSeller] = useState(false);
+  const cartBuy = false;
   const seller = item.seller;
   const cartItem = [item];
+
+
   useEffect(() => {
     if (text.length > 200) {
       setDisplayText(text.slice(0, 200) + "...");
@@ -34,11 +44,13 @@ const Producturl = ({ user, isLoggedIn }) => {
       setDisplayText(text);
     }
   }, [text]);
+
+
   const checkIfFollowing = async () => {
     setShowSeller(!showSeller);
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/isFollowing",
+        "http://localhost:4000/api/v1/auth/isFollowing",
         {
           userId: user._id,
           artistId: seller._id,
@@ -53,7 +65,7 @@ const Producturl = ({ user, isLoggedIn }) => {
   const fetchItem = async () => {
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getproductdetail",
+        "http://localhost:4000/api/v1/product/getproductdetail",
         { productId }
       );
       const productDetails = response.data.productDetails[0];
@@ -74,10 +86,10 @@ const Producturl = ({ user, isLoggedIn }) => {
   const showCart = async () => {
     try {
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/displayCartItem",
+        "http://localhost:4000/api/v1/product/displayCartItem",
         { userID }
       );
-      setCart(response.data.cartItem.cartProduct);
+      setCart(response.data.cartItem);
     } catch (error) {
       console.error("Error:", error);
       toast.error(error.response.data.message);
@@ -86,7 +98,7 @@ const Producturl = ({ user, isLoggedIn }) => {
 
   const removeFromCart = async () => {
     try {
-      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/removeFromCart", {
+      await axios.post("http://localhost:4000/api/v1/product/removeFromCart", {
         productId,
         userID,
       });
@@ -100,7 +112,7 @@ const Producturl = ({ user, isLoggedIn }) => {
 
   const addToCart = async () => {
     try {
-      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/addToCart", {
+      await axios.post("http://localhost:4000/api/v1/product/addToCart", {
         productId,
         userID,
       });
@@ -112,74 +124,45 @@ const Producturl = ({ user, isLoggedIn }) => {
     }
   };
 
-  const verifyStatus = async (response) => {
+  const updateCartQuantity = async (productId, action) => {
     try {
-      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
-        response;
-      await axios.post("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/verifySignature", {
-        R_id: razorpay_payment_id,
-        R_order: razorpay_order_id,
-        R_sign: razorpay_signature,
-        product_id: productId,
-        userId: userID,
+      // Determine the quantity to set based on action
+      const product = cart.find((p) => p.productId._id === productId);
+      let newQuantity = product.quantity;
+  
+      if (action === 'increase') {
+        newQuantity += 1;
+      } else if (action === 'decrease' && newQuantity > 1) {
+        newQuantity -= 1;
+      }
+  
+      await axios.post("http://localhost:4000/api/v1/product/updateCartQuantity", {
+        productId,
+        userID,
+        quantity: newQuantity
       });
-      toast.success("Payment successful");
-      navigate("/");
+  
+      // Refresh the cart items
+      showCart();
+      toast.success(action === 'increase' ? "Quantity increased" : "Quantity decreased");
     } catch (error) {
       console.error("Error:", error);
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 
+
+  
+
+  
+
   const buyHandler = async () => {
     setBuyPage(true);
-    // try {
-    //   const {
-    //     data: { key },
-    //   } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
-    //   const response = await axios.post(
-    //     "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/capturePayment",
-    //     {
-    //       product_id: productId,
-    //       userId: userID,
-    //       token,
-    //     }
-    //   );
-    //   toast.success("Order id created");
-
-    //   const options = {
-    //     key,
-    //     amount: response.data.amount,
-    //     currency: "INR",
-    //     name: "Huehub",
-    //     description: "Thank you Purchasing",
-    //     image: Logo,
-    //     order_id: response.data.orderId,
-    //     handler: verifyStatus,
-    //     prefill: {
-    //       name: user.name,
-    //       email: user.email,
-    //       contact: user.additionalDetail.contactNumber,
-    //     },
-    //     notes: {
-    //       address: "Razorpay Corporate Office",
-    //     },
-    //     theme: {
-    //       color: "#3399cc",
-    //     },
-    //   };
-
-    //   const razor = new window.Razorpay(options);
-    //   razor.open();
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   toast.error(error.response.data.message);
-    // }
   };
 
   useEffect(() => {
     fetchItem();
-    if (user._id) {
+    if (user) {
       showCart();
     }
   }, []);
@@ -201,6 +184,8 @@ const Producturl = ({ user, isLoggedIn }) => {
       }
     }
   };
+
+  
 
   const productHandler = (productId) => {
     navigate(`/product/${productId}`);
@@ -263,29 +248,47 @@ const Producturl = ({ user, isLoggedIn }) => {
             <div>
               <p className="text-wrap">{displayText}</p>
             </div>
-            <div className="flex mt-[2rem]">
-              {cart.some((p) => p._id === item._id) ? (
-                <button
-                  className="border px-[5%] remove h-[2.5rem] mx-[1rem] w-[11rem] rounded-md  text-white text-sm font-semibold bg-blue-800 "
-                  onClick={removeFromCart}
-                >
-                  Remove Item
-                </button>
+            <div className="flex mt-[2rem] items-center">
+              {cart && cart.some((p) => p.productId._id === item._id) ? (
+                <>
+                  <button
+                    className="border px-[5%] remove h-[2.5rem] mx-[0.1rem] w-[10rem] rounded-md text-white text-sm font-semibold bg-red-800"
+                    onClick={() => removeFromCart()} // You may want to add a confirmation dialog here
+                  >
+                    Remove Item
+                  </button>
+                  <button
+                    className="border px-[5%] h-[2.5rem] mx-[1rem] w-[3rem] rounded-md text-white font-semibold bg-blue-800"
+                    onClick={() => updateCartQuantity(item._id, 'decrease')}
+                  >
+                    -
+                  </button>
+                  <p className="text-lg font-bold mx-[1rem]">
+                    Quantity: {cart.find((p) => p.productId._id === item._id).quantity}
+                  </p>
+                  <button
+                    className="border px-[5%] h-[2.5rem] mx-[1rem] w-[3rem] rounded-md text-white font-semibold bg-blue-800"
+                    onClick={() => updateCartQuantity(item._id, 'increase')}
+                  >
+                    +
+                  </button>
+                </>
               ) : (
                 <button
-                  className="border px-[5%] h-[2.5rem] mx-[1rem] w-[10rem] rounded-md  text-white font-semibold bg-blue-800"
+                  className="border px-[5%] h-[2.5rem] mx-[1rem] w-[10rem] rounded-md text-white font-semibold bg-blue-800"
                   onClick={addToCart}
                 >
                   Add to Cart
                 </button>
               )}
+            </div>
               <button
                 onClick={buyHandler}
-                className="border px-[5%] h-[2.5rem] mx-[1rem] w-[10rem] rounded-md  text-white font-semibold bg-blue-800 "
+                className="border px-[5%] h-[2.5rem] mx-[1rem] w-[10rem] rounded-md text-white font-semibold bg-blue-800 "
               >
                 Buy Now
               </button>
-            </div>
+
             <div>
               {item.seller && (
                 <div className="mt-[rem] ">
@@ -363,7 +366,7 @@ const Producturl = ({ user, isLoggedIn }) => {
         )}
         {buyPage && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-            <Confirmation user={user} cartItem={cartItem} setBuyPage={setBuyPage} buyPage={buyPage}/>
+            <Confirmation user={user} cartItem={cartItem} setBuyPage={setBuyPage} buyPage={buyPage} cartBuy={cartBuy}/>
           </div>
         )}
       </div>

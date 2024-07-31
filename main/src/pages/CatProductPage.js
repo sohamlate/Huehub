@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 
-const CatProductPage = () => {
+const CatProductPage = ({user}) => {
   // const API_URL = "https://fakestoreapi.com/products";
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -60,7 +60,7 @@ const CatProductPage = () => {
       ) : posts.length > 0 ? (
         <div className="flex flex-row justify-center item-center px-[15rem]  w-full h-[100vh] flex-wrap gap-x-5 gap-y-9">
           {posts.map((item) => (
-            <Products key={item.id} item={item}></Products>
+            <Products key={item.id} item={item} user={user}></Products>
           ))}
         </div>
       ) : (

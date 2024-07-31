@@ -51,7 +51,7 @@ passport.use(
     {
       clientID: process.env.clientid, // Your Google OAuth client ID
       clientSecret: process.env.clientsecrete, // Your Google OAuth client secret
-      callbackURL: "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/google/callback", // Callback URL configured in Google Developer Console
+      callbackURL: "http://localhost:4000/api/v1/auth/google/callback", // Callback URL configured in Google Developer Console
       scope: ["profile", "email"], // Scope of user information requested from Google
     },
     verifyCallback

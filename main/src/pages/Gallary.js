@@ -42,7 +42,7 @@ const Gallary = ({ user }) => {
     const fetch = async () => {
       try {
         const cat = await axios.get(
-          "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getCategoryDetail"
+          "http://localhost:4000/api/v1/product/getCategoryDetail"
         );
         setCategoryList(cat.data.allCategory);
       } catch (error) {
@@ -58,7 +58,7 @@ const Gallary = ({ user }) => {
       const itemID = selectedCategories.map((cat) => cat._id);
       // console.log(categoryIds);
       const response = await axios.post(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getCategoryPageDetailArray",
+        "http://localhost:4000/api/v1/product/getCategoryPageDetailArray",
         { itemID }
       );
       const selectedCat = response.data.data.selectedCategory;
@@ -81,7 +81,7 @@ const Gallary = ({ user }) => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/product/getallproduct"
+        "http://localhost:4000/api/v1/product/getallproduct"
       );
       setOriginalPosts(res.data.data);
       setPosts(res.data.data);

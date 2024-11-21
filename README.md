@@ -88,47 +88,15 @@ Maybe you can mention me or this repo in the acknowledgements too
 ### :camera: Screenshots
 
 <div align="center"> 
-  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
+  <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732198907/Huehub/qwwk1jnytdnzxujqnnia.png" alt="screenshot" />
+</div>
+<div align="center"> 
+  <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732198904/Huehub/r4jf9k5bfkmotixzlr4i.png" alt="screenshot" />
 </div>
 
 
 <!-- TechStack -->
 ### :space_invader: Tech Stack
-
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://nextjs.org/">Next.js</a></li>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-    <li><a href="https://go.dev/">Golang</a></li>
-    <li><a href="https://nestjs.com/">Nest.js</a></li>
-    <li><a href="https://socket.io/">SocketIO</a></li>
-    <li><a href="https://www.prisma.io/">Prisma</a></li>    
-    <li><a href="https://www.apollographql.com/">Apollo</a></li>
-    <li><a href="https://graphql.org/">GraphQL</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-    <li><a href="https://redis.io/">Redis</a></li>
-    <li><a href="https://neo4j.com/">Neo4j</a></li>
-    <li><a href="https://www.mongodb.com/">MongoDB</a></li>
-  </ul>
-</details>
 
 <details>
   <summary>Client</summary>
@@ -224,7 +192,7 @@ To run this project, you will need to add the following environment variables to
 <!-- Prerequisites -->
 ### :bangbang: Prerequisites
 
-This project uses Yarn as package manager
+This project uses npm as package manager
 
 ```bash
  npm install 
@@ -233,11 +201,13 @@ This project uses Yarn as package manager
 <!-- Run Locally -->
 ### :running: Run Locally
 
+
 Clone the project
 
 ```bash
   git clone https://github.com/sohamlate/Huehub.git
 ```
+### :computer: Client
 
 Go to the project directory
 
@@ -251,10 +221,30 @@ Install dependencies
   npm install
 ```
 
-Start the server
+Start the Client
 
 ```bash
   npm start
+```
+
+### :computer: Server
+
+Go to the project directory
+
+```bash
+  cd backend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the Client
+
+```bash
+  npm run dev
 ```
 
 
@@ -268,32 +258,43 @@ To deploy this project run
 ```
 
 
-<!-- Usage -->
-## :eyes: Usage
-
-
-
 <!-- Roadmap -->
 ## :compass: Roadmap
 
-* [x] Todo 1
-* [ ] Todo 2
+* [x] Set up project structure and initial configurations
+* [x] Implement user authentication (JWT, OAuth integration)
+* [x] Integrate payment gateway (Razorpay, Stripe)
+* [x] Develop admin panel for user management and analytics
+* [x] Implement file upload functionality (Cloudinary, S3)
+* [x] Build API endpoints for CRUD operations (Projects, Users, etc.)
+* [x] Design responsive UI/UX with modern JavaScript frameworks (React, Tailwind CSS)
+* [x] Implement email notifications and alerts (Nodemailer, custom templates)
+* [x] Integrate real-time collaboration (WebSocket or Firebase)
+* [x] Add search and filtering capabilities for large datasets
+* [ ] Improve API performance with caching strategies (Redis, CDN)
+* [ ] Optimize codebase for scalability and performance
+* [ ] Develop automated testing (Unit, Integration, E2E)
+* [ ] Introduce analytics and user tracking (Google Analytics, custom dashboards)
+* [ ] Implement multilingual support for broader user base
+* [ ] Prepare project for global deployment with multi-region hosting
+* [ ] Create deployment automation scripts (Docker, Kubernetes)
+* [ ] Implement serverless architecture for scalability (AWS Lambda, Azure Functions)
+* [ ] Set up comprehensive monitoring and logging (ELK stack, Prometheus)
+* [ ] Integrate with third-party services (Slack, Trello, Jira)
+* [ ] Implement API versioning for backward compatibility
+* [ ] Add AI/ML-driven features (recommendations, search optimization)
+* [ ] Enable offline capabilities (Service Workers, PWA features)
+* [ ] Introduce machine learning for predictive analytics (user behavior, churn prediction)
 
 
 <!-- Contributing -->
 ## :wave: Contributing
 
-<a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Louis3797/awesome-readme-template" />
+<a href="https://github.com/sohamlate/Huehub/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sohamlate/Huehub" />
 </a>
-<a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Louis3797/awesome-readme-template" />
-</a>
-
 
 Contributions are always welcome!
-
-
 
 <!-- FAQ -->
 ## :grey_question: FAQ

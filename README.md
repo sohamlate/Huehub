@@ -9,7 +9,6 @@ Maybe you can mention me or this repo in the acknowledgements too
 <div align="center">
 
   <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732200626/Huehub/ccu5faiybttdr3tlf1dz.png" alt="logo" width="auto" height="auto" />
-  <h1>Huehub</h1>
   
   <p>
   Huehub is an online platform designed for artists to showcase and sell their artwork while offering art buyers a seamless experience for discovering and purchasing unique creations. With a user-friendly interface, secure payment processing, and robust features such as account management, file uploads, and a responsive design, Huehub empowers artists to monetize their craft and enables art lovers to support independent creators. Whether you're an artist looking to sell your work or a buyer searching for the perfect piece, Huehub connects people through the love of art.

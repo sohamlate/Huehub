@@ -8,7 +8,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 -->
 <div align="center">
 
-  <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732200501/Huehub/s1xdnlespyzrb5w9cdce.png" alt="logo" width="auto" height="auto" />
+  <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732200626/Huehub/ccu5faiybttdr3tlf1dz.png" alt="logo" width="auto" height="auto" />
   <h1>Huehub</h1>
   
   <p>

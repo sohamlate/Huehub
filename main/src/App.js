@@ -43,7 +43,7 @@ const App = () => {
   const [titems, setTitems] = useState();  // Store temporary items
   const [cartItems, setCartItems] = useState([]);  // Store cart items
   
-  // Auto login logic to check token and validate user
+  // Auto login logic to check token and validate 
   useEffect(() => { 
     const autoLogin = async () => {
       try {

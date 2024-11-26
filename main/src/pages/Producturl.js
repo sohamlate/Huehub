@@ -310,7 +310,7 @@ const Producturl = () => {
                     </div>
                   </div>
                   <button className=" border h-[3rem] w-[17rem] rounded-md shadow  text-white font-semibold bg-blue-600 ">
-                    <a href={`https://wa.me/${item.seller.contactNumber}`}>
+                    <a href={`http://wa.me/${item.seller.contactNumber}`}>
                       {" "}
                       Message Seller{" "}
                     </a>

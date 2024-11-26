@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import logo from "../assests/bg3.jpg";
 import signImage from "../assests/artists.jpg";
+
+// SignUpPage Component
 const SignUpPage = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     firstname: "",
@@ -16,16 +18,18 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     otp: "",
     contactNumber: "",
   });
-  const [visible, Setvisible] = useState(true);
-  const [visible1, Setvisible1] = useState(true);
+  const [visible, Setvisible] = useState(false);
+  const [visible1, Setvisible1] = useState(false);
   const [accountType, setAccountType] = useState("Customer");
 
   const navigate = useNavigate();
 
+  // Handle input changes
   function changeHandler(event) {
     setFormData((pre) => ({ ...pre, [event.target.id]: event.target.value }));
   }
 
+  // Form submit handler
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -57,33 +61,32 @@ const SignUpPage = ({ setIsLoggedIn }) => {
             Please enter your details
           </p>
 
+          {/* Account type toggle */}
           <div className="flex justify-center items-center w-fit mt-[0.5rem]  px-1 bg-blue-600 rounded-full  text-white">
             <button
-              onClick={() => {
-                setAccountType("Customer");
-              }}
+              onClick={() => setAccountType("Customer")}
               className={`${
                 accountType === "Customer" ? "bg-blue-500 text-slate-150" : ""
-              }  py-3 px-7 rounded-full transition-all duration-500`}
+              } py-3 px-7 rounded-full transition-all duration-500`}
             >
               User
             </button>
             <button
-              onClick={() => {
-                setAccountType("Seller");
-              }}
+              onClick={() => setAccountType("Seller")}
               className={`${
-                accountType === "Seller" ? "bg-blue-500 text-slate-150 " : ""
-              }  py-3 px-7 rounded-full transition-all duration-500`}
+                accountType === "Seller" ? "bg-blue-500 text-slate-150" : ""
+              } py-3 px-7 rounded-full transition-all duration-500`}
             >
               Seller
             </button>
           </div>
 
+          {/* Sign-up form */}
           <form
             className="flex flex-col mx-2 mt-[0.5rem] gap-y-2 w-full"
             onSubmit={submitHandler}
           >
+            {/* Name input fields */}
             <div className="flex justify-center items-center gap-x-2 w-full px-2">
               <div className="flex flex-col w-[50%]">
                 <label htmlFor="firstname">
@@ -118,6 +121,8 @@ const SignUpPage = ({ setIsLoggedIn }) => {
                 />
               </div>
             </div>
+
+            {/* Email input */}
             <div className="w-full px-2">
               <label className="flex flex-col " htmlFor="email">
                 <p className="text-left ml-2 ">
@@ -135,6 +140,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
               />
             </div>
 
+            {/* Password input fields */}
             <div className="flex gap-x-2 px-2 ">
               <div className="flex flex-col w-[50%]">
                 <label htmlFor="password">
@@ -153,10 +159,8 @@ const SignUpPage = ({ setIsLoggedIn }) => {
                     onChange={changeHandler}
                   />
                   <div
-                    onClick={() => {
-                      Setvisible(!visible);
-                    }}
-                    className="cursor-pointer absolute right-1 -mt-7 ml-[9rem] "
+                    onClick={() => Setvisible(!visible)}
+                    className="cursor-pointer absolute right-1 -mt-7 ml-[9rem]"
                   >
                     {visible ? <FaRegEye /> : <FaRegEyeSlash />}
                   </div>
@@ -164,9 +168,9 @@ const SignUpPage = ({ setIsLoggedIn }) => {
               </div>
 
               <div className="flex flex-col w-[50%]">
-                <label htmlFor="con-password" className="">
+                <label htmlFor="confirmPassword">
                   <p className="text-left py-1 ">
-                    Conform Password<sup>*</sup>
+                    Confirm Password<sup>*</sup>
                   </p>
                 </label>
                 <div className="w-full relative rounded-md  h-[2.5rem]  bg-gray-100 ">
@@ -175,40 +179,42 @@ const SignUpPage = ({ setIsLoggedIn }) => {
                     required
                     id="confirmPassword"
                     type={visible1 ? "text" : "password"}
-                    placeholder=" Conform Password"
+                    placeholder=" Confirm Password"
                     value={formData.confirmPassword}
                     onChange={changeHandler}
                   />
                   <div
-                    onClick={() => {
-                      Setvisible1(!visible1);
-                    }}
-                    className="cursor-pointer absolute right-1 -mt-7 "
+                    onClick={() => Setvisible1(!visible1)}
+                    className="cursor-pointer absolute right-1 -mt-7"
                   >
                     {visible1 ? <FaRegEye /> : <FaRegEyeSlash />}
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Contact number input */}
             <div className="px-2 w-full">
               <label className="flex flex-col" htmlFor="contactNumber">
                 <p className="text-left py-1 ">
-                  contactNumber<sup>*</sup>
+                  Contact Number<sup>*</sup>
                 </p>
               </label>
               <input
                 required
                 id="contactNumber"
-                className="rounded-md w-full text-black  h-[2.5rem] bg-gray-100 border focus:border-blue-600"
+                className="rounded-md w-full text-black h-[2.5rem] bg-gray-100 border focus:border-blue-600"
                 type="text"
                 placeholder=" Contact no"
                 value={formData.contactNumber}
                 onChange={changeHandler}
               />
             </div>
+
+            {/* OTP input */}
             <div className="px-2 w-full">
-              <label className="flex flex-col" htmlFor="OTP">
-                <p className="text-left ">
+              <label className="flex flex-col" htmlFor="otp">
+                <p className="text-left">
                   OTP<sup>*</sup>
                 </p>
               </label>
@@ -223,6 +229,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
               />
             </div>
 
+            {/* Submit button */}
             <button className=" border m-3 py-[3%] mt-3 rounded-md shadow hover:shadow-inner text-white font-semibold bg-blue-600 hover:shadow-white">
               Sign Up
             </button>

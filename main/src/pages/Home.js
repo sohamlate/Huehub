@@ -18,7 +18,7 @@ const Home = ({user})=>{
     const [loading ,setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
-
+    const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login"); 
     }

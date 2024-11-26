@@ -23,7 +23,7 @@ const Gallary = ({ user }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const postsPerPage = 8;
-
+  const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login"); 
     }

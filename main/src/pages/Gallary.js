@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Pagination from "@mui/material/Pagination";
 import { Stack } from "@mui/material";
 import debounce from "lodash.debounce";
+import { useNavigate } from "react-router-dom";
 
 const Products = React.lazy(() => import("../components/Products"));
 const Spinner = React.lazy(() => import("../components/Spinner"));
@@ -24,6 +25,7 @@ const Gallary = ({ user }) => {
 
   const postsPerPage = 8;
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
     if (!token) {
       navigate("/login"); 
     }

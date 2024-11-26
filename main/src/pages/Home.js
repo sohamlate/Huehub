@@ -19,6 +19,10 @@ const Home = ({user})=>{
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
 
+    if (!token) {
+      navigate("/login"); 
+    }
+
     function explorehandler(){
         navigate('/gallery');
     }

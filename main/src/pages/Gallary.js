@@ -24,6 +24,10 @@ const Gallary = ({ user }) => {
 
   const postsPerPage = 8;
 
+    if (!token) {
+      navigate("/login"); 
+    }
+
   function changeHandler(event) {
     const { id, value, checked } = event.target;
     //console.log(event.target.value);

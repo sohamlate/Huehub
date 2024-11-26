@@ -48,9 +48,9 @@ const App = () => {
     const autoLogin = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login"); 
-        }
+        // if (!token) {
+        //   navigate("/login"); 
+        // }
 
         const response = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/auth/autoLogin", {
           headers: { Authorization: `${token}` },

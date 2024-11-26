@@ -43,7 +43,7 @@ const Products = ({ item, user, isLiked, setIsLiked }) => {
   return (
     <div
       onClick={handleClick}
-      className="relative h-[325px] shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 max-w-[280px] p-5 rounded-md border-white product-card"
+      className="relative h-[325px] bg-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 max-w-[280px] p-5 rounded-md border-white product-card"
     >
       <div
         className="absolute top-2 right-2 cursor-pointer bg-white rounded-full p-1 like-button"

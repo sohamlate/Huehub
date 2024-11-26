@@ -38,7 +38,7 @@ const Navbar = ({ isLoggedIn,setIsLoggedIn,user,setUser,titems,cartItems,setTite
 
   useEffect(() => {
     showCart();
-  }, [user,cartItem]);
+  }, [user]);
 
   useEffect(() => {
     if(cartItem)

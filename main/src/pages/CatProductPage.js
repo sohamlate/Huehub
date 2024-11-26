@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,Suspense } from "react";
 import Products from "../components/Products";
 import Spinner from "../components/Spinner";
 import { useLocation } from "react-router-dom";
@@ -7,11 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
+import { motion } from "framer-motion";
+import Pagination from "@mui/material/Pagination";
+import { Stack } from "@mui/material";
+
 
 const CatProductPage = ({user}) => {
-  // const API_URL = "https://fakestoreapi.com/products";
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+   const [isLiked, setIsLiked] = useState(false);
+  const postsPerPage = 8;
+
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +42,15 @@ const CatProductPage = ({user}) => {
     fetchProductData();
   }, []);
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
   //  console.log("fdscvdsv",posts);
 
   return (
@@ -56,20 +72,44 @@ const CatProductPage = ({user}) => {
       </div>
 
       {loading ? (
-        <Spinner />
-      ) : posts.length > 0 ? (
-        <div className="flex flex-row justify-center item-center px-[15rem]  w-full h-[100vh] flex-wrap gap-x-5 gap-y-9">
-          {posts.map((item) => (
-            <Products key={item.id} item={item} user={user}></Products>
-          ))}
-        </div>
-      ) : (
-        <div>
-          <p className="font-semibold text-xl ml-[44%] mt-[20%]">
-            No Product found
-          </p>
-        </div>
-      )}
+              <Suspense fallback={<Spinner />}>
+                <Spinner />
+              </Suspense>
+            ) : posts.length > 0 ? (
+              <Stack spacing={2} className="no-scrollbar">
+                <div className="no-scrollbar flex flex-col justify-center items-center sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-white rounded-md hscroll gap-y-3 gap-x-3 p-5">
+                  {currentPosts.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="basis-1/4 grow no-scrollbar"
+                    >
+                   
+                     {<Suspense fallback={<div>Loading...</div>}>
+                        <Products
+                          item={item}
+                          user={user}
+                          isLiked={user.length > 0 && user.likedProducts.includes(item._id)}
+                          setIsLiked={setIsLiked}
+                        />
+                      </Suspense>}
+                    </motion.div>
+                  ))}
+                </div>
+                <Pagination
+                  count={Math.ceil(posts.length / postsPerPage)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  className="flex justify-center"
+                />
+              </Stack>
+            ) : (
+              <div>
+                <p className="font-semibold text-xl">No Product found</p>
+              </div>
+            )}
     </div>
   );
 };

@@ -92,6 +92,9 @@ Maybe you can mention me or this repo in the acknowledgements too
 <div align="center"> 
   <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732198904/Huehub/r4jf9k5bfkmotixzlr4i.png" alt="screenshot" />
 </div>
+<div align="center"> 
+  <img src="https://res.cloudinary.com/dsy3ebkqc/image/upload/v1732603362/Huehub/xqumd4zvqu8c6vbfrqws.png" alt="screenshot" />
+</div>
 
 
 <!-- TechStack -->
@@ -181,8 +184,8 @@ To run this project, you will need to add the following environment variables to
 - `API_SECRET`="your_api_secret"
 - `RAZORPAY_KEY`="your_razorpay_key"
 - `RAZORPAY_SECRET`="your_razorpay_secret"
-- `CLIENT_ID`="your_google_client_id"
-- `CLIENT_SECRET`="your_google_client_secret"
+- `clientid`="your_google_client_id"
+- `clientsecrete`="your_google_client_secret"
 
 
 <!-- Getting Started -->

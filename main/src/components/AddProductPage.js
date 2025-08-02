@@ -183,7 +183,7 @@ const Productpage = ({ showAddPage, setShowAddPage }) => {
           </div>
         </div>
       </div>
-      <button className="left-1/2 ml-[50%] mt-[3%] border-2 bg-blue-600 py-2 px-[3rem] text-white font-semibold">
+      <button onClick={submitHandler} className="left-1/2 ml-[50%] mt-[3%] border-2 bg-blue-600 py-2 px-[3rem] text-white font-semibold">
         Submit
       </button>
     </form>

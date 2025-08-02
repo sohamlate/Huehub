@@ -158,7 +158,7 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
 
     } catch (error) {
       console.error("Error:", error);
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 

@@ -34,7 +34,7 @@ import MyProduct from "./pages/MyProduct";
 import EditProfile from "./components/EditProfile";
 
 // Socket connection for real-time features
-const socket = io("http://localhost:4000");
+// const socket = io("http://localhost:4000");
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // Track login state
@@ -95,7 +95,7 @@ const App = () => {
       {/* Define routes for different pages */}
       <Routes>
         <Route path="/" element={<Home user={user}/>} />
-        <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} socket={socket} user={user} setUser={setUser} />} />
+        <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser} />} />
         <Route path="/otp" element={<OtpPage />} />
         <Route path="/reset" element={<ResetPass />} />
         <Route path="/update-password/:updateToken" element={<UpdatePass />} />

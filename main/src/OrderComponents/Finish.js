@@ -13,6 +13,8 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   let totalPrice = 0;
+
+  // console.log(token , "fdfs0");
    
 
 
@@ -101,15 +103,17 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
         data: { key },
       } = await axios.get("https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/key");
 
+      console.log("checkpoint 1");
+      
       const response = cartBuy
-       ?  await axios.post(
+      ?  await axios.post(
         "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/manyCapturePayment",
         {
           userId: userID,
           token,
         }
       )
-       : await axios.post(
+      : await axios.post(
         "https://huehub-vyrf-git-main-soham-lates-projects.vercel.app/api/v1/payment/capturePayment",
         {
           product_id: productId,
@@ -117,10 +121,11 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
           token,
         }
       );
+      console.log("checkpoint 2");
       console.log(response,"payment");
       toast.success("Order id created");
       totalPrice = response.data.amount;
-
+      
       const options = {
         key,
         amount: response.data.amount,
@@ -142,13 +147,14 @@ const Finish = ({ cartItem, user, formData, cartBuy , setCartBuy }) => {
           color: "#3399cc",
         },
       };
-
+      
       const razor = new window.Razorpay(options);
       razor.open();
-
+      
       razor.on('payment.failed' , function (response){
         toast.error("Payment Failed");
       });
+      console.log("checkpoint 3");
 
     } catch (error) {
       console.error("Error:", error);

@@ -38,10 +38,10 @@ const LoginPage = (props) => {
       setIsLoggedIn(true);
       props.setUser(response.data.user);
       toast.success("Logged In");
-      props.socket.emit("login", {
-        userId: response.data.user._id,
-        socketId: props.socket.id,
-      });
+      // props.socket.emit("login", {
+      //   userId: response.data.user._id,
+      //   socketId: props.socket.id,
+      // });
       navigate("/gallery");
     } catch (error) {
       console.error("Error:", error);
